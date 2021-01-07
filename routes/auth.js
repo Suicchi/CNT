@@ -22,7 +22,7 @@ router.post('/reg', async (req, res)=>{
                 password: encryptedPass
             }
             
-            let user = await User.findOne({ username: req.body.username})
+            let user = await User.findOne({ username: req.body.username}) || await User.findOne({ email: req.body.email})
     
             if(user){
                 // show error

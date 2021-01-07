@@ -3,22 +3,25 @@ const router = express.Router()
 const {ensureAuth, ensureGuest } = require('../middleware/auth')
 
 
-// Register
-// /register
+// Dashboard
+// GET /
 router.get('/', ensureAuth, (req,res)=>{
-    res.render('dashboard')
+    res.render('dashboard', {
+        name : req.user.name,
+        id: req.user._id
+    })
 })
 
+// Register
+// GET /register
 router.get('/register', ensureGuest ,(req,res)=>{
     res.render('register', {layout: 'logreg', msg: req.flash('msg')})
 })
 
 // Login
-// /login
+// GET /login
 router.get('/login', ensureGuest , (req,res)=>{
-    // console.log(req.flash('msg'))
     res.render('login', {layout:'logreg', msg: req.flash('msg')})
-    // res.send(req.flash('msg'))
 })
 
 // Testing flash messages - working
