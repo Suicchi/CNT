@@ -52,6 +52,7 @@ app.use(flash())
 // Routes
 app.use('/',require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
+app.use('/chat', require('./routes/chat'))
 
 
 // handlebars
@@ -63,4 +64,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT,console.log(`Server running on ${process.env.NODE_ENV} mode on port ${PORT}`));
+const server = app.listen(PORT,console.log(`Server running on ${process.env.NODE_ENV} mode on port ${PORT}`));
+const io = require('socket.io')(server)
+
+// Socket.io operations
+require('./sockets/sockets')(io)
