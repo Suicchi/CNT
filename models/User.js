@@ -26,12 +26,6 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        validate: [
-            (password)=>{
-                return password.length > 8
-            },
-            'Password should be longer'
-        ]
     },
     createdAt: {
         type: Date,

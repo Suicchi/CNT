@@ -5,7 +5,7 @@ const session = require('express-session')
 const passport = require('passport')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
-const flash = require('express-flash')
+const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
@@ -28,14 +28,12 @@ if(process.env.NODE_ENV == 'development'){
     app.use(morgan('dev'))
 }
 
-// for flash messages
-app.use(flash())
-
 // Use bodyparser
 app.use(urlParser)
 
 // parse application/json
 app.use(bodyParser.json())
+
 
 // use express session
 app.use(session({
@@ -48,15 +46,20 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+// for flash messages
+app.use(flash())
+
 // Routes
 app.use('/',require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
 
 
-
 // handlebars
 app.engine('.hbs', handlebars({default:'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
+
+// static folders
+app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = process.env.PORT || 5000
 
