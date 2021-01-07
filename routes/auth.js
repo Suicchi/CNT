@@ -3,7 +3,6 @@ const router = express.Router()
 const passport = require('passport')
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
-const { route } = require('.')
 
 // Register user
 // /auth/reg
