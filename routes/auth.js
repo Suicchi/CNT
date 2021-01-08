@@ -22,19 +22,26 @@ router.post('/reg', async (req, res)=>{
                 password: encryptedPass
             }
             
-            let user = await User.findOne({ username: req.body.username}) || await User.findOne({ email: req.body.email})
+            let user = await User.findOne({ username: req.body.username})
     
             if(user){
                 // show error
-                console.log('User already exists')
-                req.flash('msg','User already exists')
+                req.flash('msg','User with the username already exists')
                 res.redirect('/register')
             }
             else {
-                user = await User.create(newUser)
-                req.flash('msg', 'Success')
-                res.redirect('/login')
-            }
+                user = await User.findOne({ email: req.body.email})
+                if(user){
+                    // show error
+                    req.flash('msg','User with the email already exists')
+                    res.redirect('/register')
+                }
+                else {
+                    user = await User.create(newUser)
+                    req.flash('msg', 'Success')
+                    res.redirect('/login')
+                }
+            }            
         }
     } catch(err){
         console.error(err)
