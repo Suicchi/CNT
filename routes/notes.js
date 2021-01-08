@@ -165,7 +165,7 @@ router.get('/:id', ensureAuth, async (req, res) =>{
         if (!note) {
             res.render('errors/404')
         }
-        else if (note.author._id != req.user.id) {
+        else if (note.author._id != req.user.id && note.status != 'public') {
             res.render('errors/500')
         }
         else {

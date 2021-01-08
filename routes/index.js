@@ -9,6 +9,7 @@ const Todo = require('../models/Todo')
 router.get('/', ensureAuth, async (req,res)=>{
     const todos = await Todo.find({author: req.user.id})
                             .populate('author')
+                            .sort({taskNo: 'desc'})
                             .lean()
                             
     res.render('dashboard', {
