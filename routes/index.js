@@ -1,14 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const {ensureAuth, ensureGuest } = require('../middleware/auth')
+const Todo = require('../models/Todo')
 
 
 // Dashboard
 // GET /
-router.get('/', ensureAuth, (req,res)=>{
+router.get('/', ensureAuth, async (req,res)=>{
+    const todos = await Todo.find({author: req.user.id})
+                            .populate('author')
+                            .lean()
+                            
     res.render('dashboard', {
         name : req.user.name,
-        id: req.user._id
+        id: req.user._id,
+        todos
     })
 })
 

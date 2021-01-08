@@ -69,6 +69,7 @@ app.use('/',require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
 app.use('/chat', require('./routes/chat'))
 app.use('/notes', require('./routes/notes'))
+app.use('/todo', require('./routes/todo'))
 
 // handlebars helper functions
 const {rmTags, showOnly, userIsAuthor, showDate, preSelect} = require('./helpers/hbs')
