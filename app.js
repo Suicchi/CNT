@@ -9,6 +9,7 @@ const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+const favicon = require('serve-favicon')
 
 const urlParser = bodyParser.urlencoded({extended:false})
 
@@ -86,6 +87,9 @@ app.set('view engine', '.hbs');
 
 // static folders
 app.use(express.static(path.join(__dirname, 'public')))
+
+// serve favicon
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 const PORT = process.env.PORT || 5000
 

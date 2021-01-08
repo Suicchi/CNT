@@ -6,6 +6,7 @@ autoincrement.initialize(mongoose.connection)
 const ToDoSchema = new mongoose.Schema({
     taskNo : {
         type: Number,
+        unique:true
     },
     task : {
         type: String,
