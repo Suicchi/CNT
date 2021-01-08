@@ -1,0 +1,52 @@
+{{!-- CKEDITOR 5 via cdn --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/24.0.0/ckeditor.js" integrity="sha512-2RXJ3WgDyxSt7hNYLuG1BIe3vbXjlw4Q61JT9ntuNhkc4IS4G04qyaoumylraZENyP5vXrtCDQGE1Dt2weLnvA==" crossorigin="anonymous"></script>
+<h1>Add new note</h1>
+
+<div class="row">
+    <form action="/notes/add" method="POST" class="col s12">
+        <div class="row">
+            <div class="input-field">
+                <input type="text" id="title" name="title" required>
+                <label for="title">Title</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <select id="status" name="status">
+                    <option value="public" >Public</option>
+                    <option value="private"selected>Private</option>
+                </select>
+                <label for="status">Status</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <h6>Your Note</h6>
+                <textarea id="body" name="body"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" >Save
+                <i class="material-icons right">send</i>
+            </button>
+            <a href="/" class="btn orange">Cancel
+                <i class="material-icons right">cancel</i>
+            </a>
+        </div>
+    </form>
+</div>
+{{!-- Todo: import ckeditor from node modules --}}
+{{!-- <script src="@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script> --}}
+
+<script>
+    ClassicEditor
+            .create( document.querySelector( '#body' ), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ]
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+</script>

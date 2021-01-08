@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const NoteSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        default: `Note ${Date.now.toString()}`
     },
     body :{
         type: String,

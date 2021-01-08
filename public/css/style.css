@@ -1,0 +1,9 @@
+body{
+    margin-top: 2px;
+    padding-top:15px;
+}
+
+/* setting height for ckeditor */
+.ck-editor__editable {
+    min-height: 200px;
+}
