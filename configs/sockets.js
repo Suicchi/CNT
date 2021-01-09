@@ -1,4 +1,4 @@
-module.exports = function(io) {
+module.exports = (io) => {
     io.on('connection', (socket)=>{
         console.log(`${socket.id} connected`)
         

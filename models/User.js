@@ -33,9 +33,9 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-UserSchema.methods.verifyPassword = function(password) {
+UserSchema.methods.verifyPassword = async (password) => {
     // console.log('checking pass')
-    return bcrypt.compareSync(password, this.password)
+    return await bcrypt.compareSync(password, this.password)
 }
 
 module.exports = mongoose.model('User', UserSchema)

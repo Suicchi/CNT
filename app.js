@@ -97,4 +97,4 @@ const server = app.listen(PORT,console.log(`Server running on ${process.env.NODE
 const io = require('socket.io')(server)
 
 // Socket.io operations
-require('./sockets/sockets')(io)
+require('./configs/sockets')(io)
