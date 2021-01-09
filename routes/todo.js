@@ -1,45 +1,41 @@
 const express = require('express'),
-      router = express(),
-      {ensureAuth} = require('../middleware/auth'),
-      Todo = require('../models/Todo')
+	router = express(),
+	{ ensureAuth } = require('../middleware/auth'),
+	Todo = require('../models/Todo')
 
 // Create new todo
 // POST /todo/
 router.post('/', ensureAuth, async (req, res) => {
-    try{
-        req.body.author = req.user.id
-        await Todo.create(req.body)
-        res.redirect('/')
-    }
-    catch(error) {
-        console.error(error)
-        res.render('errors/500')
-    }
+	try {
+		req.body.author = req.user.id
+		await Todo.create(req.body)
+		res.redirect('/')
+	} catch (error) {
+		console.error(error)
+		res.render('errors/500')
+	}
 })
 
 // Delete the todo
 // POST /todo/taskNo
-router.delete('/:taskNo', ensureAuth,  async(req, res)=> {
-    try {
-        const taskNo = parseInt(req.params.taskNo)
-        const todo =  await Todo.findOne({taskNo: taskNo})
-        if(!todo) {
-            console.error('No todo found')
-            res.render('errors/500')
-        }
-        else if(todo.author != req.user.id) {
-            console.error('bad user attempt')
-            res.render('errors/500')
-        }
-        else {
-            await Todo.deleteOne(todo)
-            res.redirect('/')
-        }
-    } catch (error) {
-        console.error(error)
-        res.render('errors/500')
-    }
+router.delete('/:taskNo', ensureAuth, async (req, res) => {
+	try {
+		const taskNo = parseInt(req.params.taskNo)
+		const todo = await Todo.findOne({ taskNo: taskNo })
+		if (!todo) {
+			console.error('No todo found')
+			res.render('errors/500')
+		} else if (todo.author != req.user.id) {
+			console.error('bad user attempt')
+			res.render('errors/500')
+		} else {
+			await Todo.deleteOne(todo)
+			res.redirect('/')
+		}
+	} catch (error) {
+		console.error(error)
+		res.render('errors/500')
+	}
 })
-
 
 module.exports = router

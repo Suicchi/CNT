@@ -11,23 +11,23 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const favicon = require('serve-favicon')
 
-const urlParser = bodyParser.urlencoded({extended:false})
+const urlParser = bodyParser.urlencoded({ extended: false })
 
 // configs
-dotenv.config({path: './configs/configs.env'})
+dotenv.config({ path: './configs/configs.env' })
 
 // passport config
 require('./configs/passport')(passport)
 
 // db
-const connectDB = require('./configs/db');
-const MongoStore  = require('connect-mongo')(session);
+const connectDB = require('./configs/db')
+const MongoStore = require('connect-mongo')(session)
 connectDB()
 
 const app = express()
 
-if(process.env.NODE_ENV == 'development'){
-    app.use(morgan('dev'))
+if (process.env.NODE_ENV == 'development') {
+	app.use(morgan('dev'))
 }
 
 // Use bodyparser
@@ -36,22 +36,29 @@ app.use(urlParser)
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(methodOverride(function (req, res) {
-    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-      // look in urlencoded POST bodies and delete it
-      let method = req.body._method
-      delete req.body._method
-      return method
-    }
-  }))
+app.use(
+	methodOverride(function (req, res) {
+		if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+			// look in urlencoded POST bodies and delete it
+			let method = req.body._method
+			delete req.body._method
+			return method
+		}
+	})
+)
 
 // use express session
-app.use(session({
-    secret: process.env.SESSIONSECRET,
-    resave:false,
-    saveUninitialized: false,
-    store: new MongoStore({mongooseConnection: mongoose.connection})
-}))
+const sessionMiddleware = session({
+	secret: process.env.SESSIONSECRET,
+	resave: false,
+	saveUninitialized: false,
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection,
+	}),
+})
+
+app.use(sessionMiddleware)
+
 // initialize passport
 app.use(passport.initialize())
 app.use(passport.session())
@@ -60,30 +67,43 @@ app.use(passport.session())
 app.use(flash())
 
 // global variable
-app.use((req, res, next)=> {
-    res.locals.user = req.user || null
-    next()
+app.use((req, res, next) => {
+	res.locals.user = req.user || null
+	next()
 })
 
 // Routes
-app.use('/',require('./routes/index'))
+app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
 app.use('/chat', require('./routes/chat'))
 app.use('/notes', require('./routes/notes'))
 app.use('/todo', require('./routes/todo'))
 
 // handlebars helper functions
-const {rmTags, showOnly, userIsAuthor, showDate, preSelect} = require('./helpers/hbs')
+const {
+	rmTags,
+	showOnly,
+	userIsAuthor,
+	showDate,
+	preSelect,
+} = require('./helpers/hbs')
 
 // handlebars
-app.engine('.hbs', handlebars({default:'main', extname: '.hbs', helpers: {
-    rmTags,
-    showOnly,
-    userIsAuthor,
-    showDate,
-    preSelect
-}}));
-app.set('view engine', '.hbs');
+app.engine(
+	'.hbs',
+	handlebars({
+		default: 'main',
+		extname: '.hbs',
+		helpers: {
+			rmTags,
+			showOnly,
+			userIsAuthor,
+			showDate,
+			preSelect,
+		},
+	})
+)
+app.set('view engine', '.hbs')
 
 // static folders
 app.use(express.static(path.join(__dirname, 'public')))
@@ -93,8 +113,15 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 const PORT = process.env.PORT || 5000
 
-const server = app.listen(PORT,console.log(`Server running on ${process.env.NODE_ENV} mode on port ${PORT}`));
-const io = require('socket.io')(server)
+const server = app.listen(
+	PORT,
+	console.log(
+		`Server running on ${process.env.NODE_ENV} mode on port ${PORT}`
+	)
+)
+const io = require('socket.io')(server).use((socket, next) => {
+	sessionMiddleware(socket.request, {}, next) //Passes the user data from passport to socket server
+})
 
 // Socket.io operations
 require('./configs/sockets')(io)
