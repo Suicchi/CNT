@@ -6,6 +6,12 @@ module.exports = (io) => {
     io.on('connection', (socket)=>{
         console.log(`${socket.id} connected`)
 
+        socket.on('clientSystemMessage', username => {
+            console.log(`${username} joined chat`)
+            // check if user exists && tell client to show 
+            
+        })
+
         socket.on('chatMsg', async (data) => {
 
             // first check if user exists
@@ -28,7 +34,7 @@ module.exports = (io) => {
                 await Chat.create(newChatMSG)
                 console.log('msg stored')
                 // Let all connected parties know about new message
-                io.emit('newMsg', {
+                socket.broadcast.emit('newMsg', {
                     chatMsg: msg,
                     username: data.username
                 })

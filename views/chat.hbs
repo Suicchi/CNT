@@ -1,17 +1,19 @@
 <h1>Public Chat</h1>
-<div id="chat-messages">
-    {{#each chats}}
-        <div class="row">
-            <div class="col s2">
-                <span>{{sender.username}}:</span>
+<div class="row">
+    <div id="chat-messages" class="col s9" >
+        {{#each chats}}
+            <div class="blue-grey card-panel lighten-5 left-align">
+                <span class="">{{sender.username}}:</span> {{{chatMsg}}}
             </div>
-            <div class="col s8">
-                {{{chatMsg}}}
-            </div>
-        </div>
-    {{else}}
-        No chat messages
-    {{/each}}
+        {{else}}
+            No chat messages
+        {{/each}}
+    </div>
+    <div class="col s3 card-panel">
+        <h6 class=" center-align">Users connected</h6>
+        {{#each users}}
+        {{/each}}
+    </div>
 </div>
 
 
@@ -20,10 +22,10 @@
         <input type="text" autocomplete="off" name="chatMsg" id="chatMsg" required>
     </div>
     <div class="col s2">
-        {{!-- WARN: change the hidden input later so that we don't expose it to the browser --}}
+        {{!-- WARN: I don't  want to expose it to the browser so check that later --}}
         <input type="hidden" id="username" value="{{username}}">
         <button class="btn" type="button" onclick="sendMsg()">
-            <i class="material-icons left">send</i>
+            <i class="material-icons">send</i>
         </button>
     </div>
 </div>
