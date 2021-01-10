@@ -17,7 +17,7 @@ Database
 
 Frontend
 - Materialize CSS
-- CKEDIT 5
+- CKEDITOR 5
 
 Inside the configs folder, create a 'configs.env' file if you don't already have one. Then set the following ENV variables. Don't put the <>
 
