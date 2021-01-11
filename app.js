@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const favicon = require('serve-favicon')
+const socketIo = require('socket.io')
 
 const urlParser = bodyParser.urlencoded({ extended: false })
 
@@ -20,13 +21,14 @@ dotenv.config({ path: './configs/configs.env' })
 require('./configs/passport')(passport)
 
 // db
-const connectDB = require('./configs/db')
 const MongoStore = require('connect-mongo')(session)
+const connectDB = require('./configs/db')
+
 connectDB()
 
 const app = express()
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
 }
 
@@ -37,14 +39,17 @@ app.use(urlParser)
 app.use(bodyParser.json())
 
 app.use(
-	methodOverride(function (req, res) {
+	// eslint-disable-next-line consistent-return
+	methodOverride((req) => {
 		if (req.body && typeof req.body === 'object' && '_method' in req.body) {
 			// look in urlencoded POST bodies and delete it
-			let method = req.body._method
+			// eslint-disable-next-line no-underscore-dangle
+			const method = req.body._method
+			// eslint-disable-next-line no-underscore-dangle
 			delete req.body._method
 			return method
 		}
-	})
+	}),
 )
 
 // use express session
@@ -101,7 +106,7 @@ app.engine(
 			showDate,
 			preSelect,
 		},
-	})
+	}),
 )
 app.set('view engine', '.hbs')
 
@@ -116,11 +121,11 @@ const PORT = process.env.PORT || 5000
 const server = app.listen(
 	PORT,
 	console.log(
-		`Server running on ${process.env.NODE_ENV} mode on port ${PORT}`
-	)
+		`aaaServer running on ${process.env.NODE_ENV} mode on port ${PORT}`,
+	),
 )
-const io = require('socket.io')(server).use((socket, next) => {
-	sessionMiddleware(socket.request, {}, next) //Passes the user data from passport to socket server
+const io = socketIo(server).use((socket, next) => {
+	sessionMiddleware(socket.request, {}, next) // Passes the user data from passport to socket server
 })
 
 // Socket.io operations
