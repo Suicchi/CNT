@@ -127,7 +127,7 @@ router.get('/edit/:id', ensureAuth, async (req, res) => {
 // PUT /notes/edit/id
 router.put('/:id', ensureAuth, async (req, res) => {
 	try {
-		let note = await Note.findById(req.params.id)
+		const note = await Note.findById(req.params.id)
 
 		if (!note) {
 			return res.render('error/404')
@@ -136,7 +136,7 @@ router.put('/:id', ensureAuth, async (req, res) => {
 		if (note.author != req.user.id) {
 			throw new Error('Not allowed')
 		} else {
-			note = await Note.findOneAndUpdate({ _id: req.params.id }, req.body, {
+			await Note.findOneAndUpdate({ _id: req.params.id }, req.body, {
 				new: true,
 				runValidators: true,
 			})
@@ -175,6 +175,7 @@ router.delete('/:id', ensureAuth, async (req, res) => {
 		console.log(req.params.id)
 		await Note.findOneAndDelete({ _id: req.params.id })
 		console.log('Deleted')
+		res.redirect('/notes')
 	} catch (error) {
 		console.error(error)
 		res.render('/errors/500')
