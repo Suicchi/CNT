@@ -1,7 +1,8 @@
-const express = require('express'),
-	router = express(),
-	{ ensureAuth } = require('../middleware/auth'),
-	Todo = require('../models/Todo')
+const express = require('express')
+
+const router = express()
+const { ensureAuth } = require('../middleware/auth')
+const Todo = require('../models/Todo')
 
 // Create new todo
 // POST /todo/
@@ -20,8 +21,8 @@ router.post('/', ensureAuth, async (req, res) => {
 // POST /todo/taskNo
 router.delete('/:taskNo', ensureAuth, async (req, res) => {
 	try {
-		const taskNo = parseInt(req.params.taskNo)
-		const todo = await Todo.findOne({ taskNo: taskNo })
+		const taskNo = parseInt(req.params.taskNo, 10)
+		const todo = await Todo.findOne(taskNo)
 		if (!todo) {
 			console.error('No todo found')
 			res.render('errors/500')

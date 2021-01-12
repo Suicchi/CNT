@@ -1,4 +1,5 @@
 const express = require('express')
+
 const router = express.Router()
 const { ensureAuth } = require('../middleware/auth')
 
@@ -24,7 +25,7 @@ router.get('/public', ensureAuth, async (req, res) => {
 	}
 })
 
-//Show all my notes
+// Show all my notes
 // GET /notes
 router.get('/', ensureAuth, async (req, res) => {
 	try {
@@ -52,9 +53,9 @@ router.get('/user/:id', ensureAuth, async (req, res) => {
 		} else {
 			const user = await User.findById(req.params.id)
 			if (!user) {
-				throw 'not found'
+				throw new Error('not found')
 			} else {
-				const username = user.username
+				const { username } = user
 				const notes = await Note.find({
 					author: req.params.id,
 					status: 'public',
@@ -64,7 +65,7 @@ router.get('/user/:id', ensureAuth, async (req, res) => {
 					.lean()
 
 				res.render('notes/index', {
-					username: username,
+					username,
 					notes,
 				})
 			}
@@ -103,9 +104,7 @@ router.post('/add', ensureAuth, async (req, res) => {
 // GET /notes/edit/id
 router.get('/edit/:id', ensureAuth, async (req, res) => {
 	try {
-		const note = await Note.findById(req.params.id)
-			.populate('author')
-			.lean()
+		const note = await Note.findById(req.params.id).populate('author').lean()
 		if (note) {
 			if (note.author._id != req.user.id) {
 				res.render('errors/500')
@@ -134,22 +133,18 @@ router.put('/:id', ensureAuth, async (req, res) => {
 			return res.render('error/404')
 		}
 
-		if (note.user != req.user.id) {
-			res.redirect('/stories')
+		if (note.author != req.user.id) {
+			throw new Error('Not allowed')
 		} else {
-			note = await Note.findOneAndUpdate(
-				{ _id: req.params.id },
-				req.body,
-				{
-					new: true,
-					runValidators: true,
-				}
-			)
-			res.redirect('/notes')
+			note = await Note.findOneAndUpdate({ _id: req.params.id }, req.body, {
+				new: true,
+				runValidators: true,
+			})
+			return res.redirect('/notes')
 		}
 	} catch (error) {
 		console.error(error)
-		res.render('errors/500')
+		return res.render('errors/500')
 	}
 })
 
@@ -157,9 +152,7 @@ router.put('/:id', ensureAuth, async (req, res) => {
 // GET /notes/id
 router.get('/:id', ensureAuth, async (req, res) => {
 	try {
-		const note = await Note.findById(req.params.id)
-			.populate('author')
-			.lean()
+		const note = await Note.findById(req.params.id).populate('author').lean()
 		if (!note) {
 			res.render('errors/404')
 		} else if (note.author._id != req.user.id && note.status != 'public') {
@@ -179,10 +172,12 @@ router.get('/:id', ensureAuth, async (req, res) => {
 // DELTE /notes/
 router.delete('/:id', ensureAuth, async (req, res) => {
 	try {
-		await Note.findOneAndDelete(req.params.id)
-		res.redirect('/notes/')
+		console.log(req.params.id)
+		await Note.findOneAndDelete({ _id: req.params.id })
+		console.log('Deleted')
 	} catch (error) {
 		console.error(error)
+		res.render('/errors/500')
 	}
 })
 
