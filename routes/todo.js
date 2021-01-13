@@ -22,7 +22,7 @@ router.post('/', ensureAuth, async (req, res) => {
 router.delete('/:taskNo', ensureAuth, async (req, res) => {
 	try {
 		const taskNo = parseInt(req.params.taskNo, 10)
-		const todo = await Todo.findOne(taskNo)
+		const todo = await Todo.findOne({ taskNo })
 		if (!todo) {
 			console.error('No todo found')
 			res.render('errors/500')
