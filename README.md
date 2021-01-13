@@ -4,6 +4,7 @@ Node express app with personal to dos, notes
 Attempting to make a public chat. As of now, I'm not using any front-end JavaScript frameworks like React or Angular.
 
 Technologies being used
+
 Backend
 - Nodejs
 - Express
