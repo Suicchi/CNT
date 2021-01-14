@@ -1,6 +1,6 @@
 {{!-- CKEDITOR 5 via cdn --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/24.0.0/ckeditor.js" integrity="sha512-2RXJ3WgDyxSt7hNYLuG1BIe3vbXjlw4Q61JT9ntuNhkc4IS4G04qyaoumylraZENyP5vXrtCDQGE1Dt2weLnvA==" crossorigin="anonymous"></script>
-<h1>Edit note:</h1>
+<h1>メモ編集:</h1>
 
 <div class="row">
     <form action="/notes/{{note._id}}" method="POST" class="col s12">
@@ -8,7 +8,7 @@
         <div class="row">
             <div class="input-field">
                 <input type="text" id="title" name="title" value="{{note.title}}" required>
-                <label for="title">Title</label>
+                <label for="title">タイトル</label>
             </div>
         </div>
 
@@ -16,26 +16,26 @@
             <div class="input-field">
                 <select id="status" name="status">
                     {{#preSelect note.status}}
-                        <option value="public" selected>Public</option>
-                        <option value="private">Private</option>
+                        <option value="public" selected>公開</option>
+                        <option value="private">プライベート</option>
                     {{/preSelect}}
                 </select>
-                <label for="status">Status</label>
+                <label for="status">ステータス</label>
             </div>
         </div>
 
         <div class="row">
             <div class="input-field">
-                <h6>Your Note</h6>
+                <h6>あなたのメモ</h6>
                 <textarea id="body" name="body">{{note.body}}</textarea>
             </div>
         </div>
 
         <div class="row">
-            <button class="btn waves-effect waves-light" type="submit" >Save
+            <button class="btn waves-effect waves-light" type="submit" >セーブ
                 <i class="material-icons right">send</i>
             </button>
-            <a href="/" class="btn orange">Cancel
+            <a href="/" class="btn orange">キャンセル
                 <i class="material-icons right">cancel</i>
             </a>
         </div>

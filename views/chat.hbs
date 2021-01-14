@@ -1,4 +1,4 @@
-<h1>Public Chat</h1>
+<h1>公開チャットルーム</h1>
 <div class="row">
 	<div id="chat-messages" class="col s9">
 		{{#each chats}}
@@ -7,11 +7,11 @@
 			{{{checkTask ../user sender chatMsg}}}
 		</div>
 		{{else}}
-		No chat messages
+		チャットメッセージはありません
 		{{/each}}
 	</div>
 	<div class="card col s3">
-		<h6><strong>Users connected</strong></h6>
+		<h6><strong>参加者</strong></h6>
 		<div id="user-holder" style="padding:10px; overflow-y: scroll; min-height:500px;"></div>
 	</div>
 </div>

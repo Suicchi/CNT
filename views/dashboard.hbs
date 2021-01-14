@@ -1,44 +1,49 @@
 <div class="center-align">
-    <h1>Dashboard</h1>
-    <h3>Welcome {{name}}</h3>
-    <div>
-        <a class="waves-effect red btn" href="/auth/logout">Logout
-            <i class="material-icons left">power_settings_new</i>
-        </a>
+	<h1>ダッシュボード</h1>
+	<h3>ようこそ、 {{name}}</h3>
+	<div>
+		<a class="waves-effect red btn" href="/auth/logout">サインアウト
+		{{!-- Logout --}}
+			<i class="material-icons left">power_settings_new</i>
+		</a>
 
-        {{!-- <a class="waves-effect waves-light btn" href="/chat">Public chat</a> --}}
+		<a class="waves-effect waves-light btn" href="/chat">公開チャットルーム
+		{{!-- Public chat --}}
+			
+		</a>
 
-        <a class="waves-effect waves-light btn" href="/notes/public">Public notes
-            <i class="material-icons left">public</i>
-        </a>
+		<a class="waves-effect waves-light btn" href="/notes/public">公開メモ
+		{{!-- Public notes --}}
+			<i class="material-icons left">public</i>
+		</a>
 
-        <a class="waves-effect waves-light btn" href="/notes">My notes
-            <i class="material-icons left">note</i>
-        </a>
-    </div>
+		<a class="waves-effect waves-light btn" href="/notes">自分のメモ
+			<i class="material-icons left">note</i>
+		</a>
+	</div>
 </div>
 
 
 {{>_add_btn_todo}}
 <div class="center-align">
-    <h3>Your tasks</h3>
+	<h3>タスクリスト</h3>
 </div>
 {{#each todos}}
 <div class="row">
-    <div class="col">
-        <form action="/todo/{{taskNo}}" method="POST">
-            <input type="hidden" name="_method" value="DELETE">
-            <button type="submit" class="btn">
-                <i class="material-icons">check</i>
-            </button>
-        </form>
-    </div>
-    <div class="col">
-        <h6>{{task}}</h6>
-    </div>
+	<div class="col">
+		<form action="/todo/{{taskNo}}" method="POST">
+			<input type="hidden" name="_method" value="DELETE">
+			<button type="submit" class="btn">
+				<i class="material-icons">check</i>
+			</button>
+		</form>
+	</div>
+	<div class="col">
+		<h6>{{task}}</h6>
+	</div>
 </div>
 {{else}}
 <div class="center-align">
-    <h6><strong>Nothing to do</strong></h6>
+	<h6><strong>することはない、右下のボタンから追加できます。</strong></h6>
 </div>
 {{/each}}
