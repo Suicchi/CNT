@@ -91,6 +91,7 @@ const {
 	userIsAuthor,
 	showDate,
 	preSelect,
+	checkTask,
 } = require('./helpers/hbs')
 
 // handlebars
@@ -105,6 +106,7 @@ app.engine(
 			userIsAuthor,
 			showDate,
 			preSelect,
+			checkTask,
 		},
 	}),
 )

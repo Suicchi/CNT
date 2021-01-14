@@ -25,4 +25,18 @@ module.exports = {
 			.fn(this)
 			// eslint-disable-next-line quotes
 			.replace(new RegExp(`value="${selected}"`), `$& selected="selected"`),
+	checkTask: (currentUser, sender, message) => {
+		const regex = /(!task@)\w+/
+		const testUser = `!task@${currentUser.username}`
+		if (regex.test(message) && message.includes(testUser)) {
+			const task = message.slice(testUser.length)
+			return `<span class="">${sender.username}:</span> ${message}
+				<form class="chatTodo" method="post" action="/todo/fromChat">
+					<input type="hidden" name="task" class="task" value="From @${sender.username}: ${task}">
+					<button type="submit">Add todo</button>
+				</form>`
+		}
+
+		return `<span class="">${sender.username}:</span> ${message}`
+	},
 }
