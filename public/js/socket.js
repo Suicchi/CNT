@@ -1,14 +1,26 @@
+// eslint-disable-next-line no-undef
 const clientSocket = io()
 
-window.onload = scrollToLatestMessage()
+// Own function definitions
 
-// emit when joining
-// clientSocket.emit('clientSystemMessage')
+function scrollToLatestMessage() {
+	const messageHolder = document.getElementById('chat-messages')
+	messageHolder.scrollTop = messageHolder.scrollHeight
+}
 
-// set the username from server
-clientSocket.on('setUsername', (username) => {
-	document.getElementById('username').value = username
-})
+function showMessage(username, message) {
+	if (username == 'SYSTEM') {
+		document.getElementById('chat-messages').innerHTML += `<div class="row">
+            ${username}: ${message}
+        </div>`
+	} else {
+		document.getElementById(
+			'chat-messages',
+		).innerHTML += `<div class="blue-grey card-panel lighten-5 left-align">
+            <span class="">${username}:</span> ${message}
+        </div>`
+	}
+}
 
 // Send the message to socket server
 function sendMsg() {
@@ -26,39 +38,30 @@ function sendMsg() {
 	}
 }
 
-clientSocket.on('newMsg', (data) => {
-	showMessage(data.username, data.chatMsg)
-	// Scroll down to new message
-	scrollToLatestMessage()
-})
-
-// DOM
-document.getElementById('chatMsg').addEventListener('keypress', keypress)
-
 function keypress(e) {
 	if (e.key === 'Enter' || e.keyCode === 13) {
 		sendMsg()
 	}
 }
 
-function scrollToLatestMessage() {
-	let messageHolder = document.getElementById('chat-messages')
-	messageHolder.scrollTop = messageHolder.scrollHeight
-}
+// Function definition ends
 
-function showMessage(username, message) {
-	if (username == 'SYSTEM') {
-		document.getElementById('chat-messages').innerHTML += `<div class="row">
-            ${username}: ${message}
-        </div>`
-	} else {
-		document.getElementById(
-			'chat-messages'
-		).innerHTML += `<div class="blue-grey card-panel lighten-5 left-align">
-            <span class="">${username}:</span> ${message}
-        </div>`
-	}
-}
+// eslint-disable-next-line no-undef
+window.onload = scrollToLatestMessage()
+
+// Client Socket Operations
+// set the username from server
+clientSocket.on('setUsername', (username) => {
+	document.getElementById('username').value = username
+})
+
+clientSocket.on('newMsg', (data) => {
+	showMessage(data.username, data.chatMsg)
+	// Scroll down to new message
+	scrollToLatestMessage()
+})
+
+document.getElementById('chatMsg').addEventListener('keypress', keypress)
 
 // Messages from the server
 clientSocket.on('systemMessage', (message) => {
@@ -69,8 +72,9 @@ clientSocket.on('systemMessage', (message) => {
 clientSocket.on('connectedUsers', (Users) => {
 	const userholder = document.getElementById('user-holder')
 	let myHtml = ''
-	for (let user of Users) {
+	Users.forEach((user) => {
+		console.log(user)
 		myHtml += `<div><strong>${user}</strong></div>`
-	}
+	})
 	userholder.innerHTML = myHtml
 })
