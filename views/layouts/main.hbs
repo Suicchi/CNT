@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    {{!-- jquery --}}
+    <script src="/js/jquery-3.5.1.min.js"></script>
     <title>CNT</title>
 </head>
 
@@ -17,11 +18,12 @@
         {{{body}}}
     </div>
 
+    {{!-- materialize --}}
     <script src="/js/materialize.min.js"></script>
     <script>
-        M.Modal.init(document.querySelectorAll('.modal'))
-        M.Sidenav.init(document.querySelectorAll('.sidenav'));
-        M.FormSelect.init(document.querySelector('#status'))
+        M.Modal.init($('.modal'))
+        M.Sidenav.init($('.sidenav'));
+        M.FormSelect.init($('#status'))
     </script>
 </body>
 

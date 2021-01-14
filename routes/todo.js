@@ -10,10 +10,24 @@ router.post('/', ensureAuth, async (req, res) => {
 	try {
 		req.body.author = req.user.id
 		await Todo.create(req.body)
-		res.redirect('/')
+		return res.redirect('/')
 	} catch (error) {
 		console.error(error)
-		res.render('errors/500')
+		return res.render('errors/500')
+	}
+})
+
+// Create todo from chat
+// POST /todo/fromChat
+router.post('/fromChat', ensureAuth, async (req, res) => {
+	try {
+		req.body.author = req.user.id
+		await Todo.create(req.body)
+		// return res.json({ success: 'success' })
+		return res.redirect('/chat')
+	} catch (error) {
+		console.error(error)
+		return res.render('errors/500')
 	}
 })
 
