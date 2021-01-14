@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		unique: true,
-		match: /.+\@.+\..+/,
+		match: /.+@.+\..+/,
 		trim: true,
 	},
 	salt: {
@@ -33,9 +33,7 @@ const UserSchema = new mongoose.Schema({
 	},
 })
 
-UserSchema.methods.verifyPassword = async (password) => {
-	// console.log('checking pass')
-	return await bcrypt.compareSync(password, this.password)
-}
+UserSchema.methods.verifyPassword = async (password) =>
+	bcrypt.compareSync(password, this.password)
 
 module.exports = mongoose.model('User', UserSchema)

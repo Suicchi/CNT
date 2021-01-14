@@ -24,9 +24,7 @@ module.exports = (io) => {
 
 		//  get the username
 		const user = await User.findById(userId).select('username').lean()
-		console.log(
-			`${user.username} with socketid: ${socket.id} has connected`
-		)
+		console.log(`${user.username} with socketid: ${socket.id} has connected`)
 		// Store in array
 		if (!connectedUsers.includes(user.username)) {
 			connectedUsers.push(user.username)
@@ -71,7 +69,7 @@ module.exports = (io) => {
 			console.log(`${user.username} with ${socket.id} disconnected`)
 			socketDict[user.username].splice(
 				socketDict[user.username].indexOf(socket.id),
-				1
+				1,
 			)
 			if (socketDict[user.username].length === 0) {
 				connectedUsers.splice(connectedUsers.indexOf(user.username), 1)

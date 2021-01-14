@@ -21,6 +21,7 @@ module.exports = {
 		'linebreak-style': ['off'],
 		'no-console': 0,
 		'no-underscore-dangle': 0,
+		'implicit-arrow-linebreak': 0,
 		eqeqeq: 0,
 	},
 }
