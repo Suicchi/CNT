@@ -29,7 +29,7 @@ function showMessageWithAdd(username, message, task) {
 			<span class="">${username}:</span> ${message}
 			<form class="chatTodo" method="post" action="/todo/fromChat">
 				<input type="hidden" name="task" class="task" value="From @${username}: ${task}">
-				<button type="submit">Add todo</button>
+				<button type="submit">Todoを追加</button>
 			</form>
 		</div>`
 }

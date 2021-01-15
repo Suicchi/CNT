@@ -35,7 +35,7 @@ router.get('/', ensureAuth, async (req, res) => {
 			.lean()
 
 		res.render('notes/index', {
-			type: 'My',
+			type: '自分の',
 			notes,
 		})
 	} catch (error) {
@@ -94,6 +94,19 @@ router.post('/add', ensureAuth, async (req, res) => {
 		req.body.author = req.user.id
 		await Note.create(req.body)
 		res.redirect('/notes')
+	} catch (error) {
+		console.error(error)
+		res.render('errors/500')
+	}
+})
+
+// save note
+// POST /notes/fromChat
+router.post('/fromChat', ensureAuth, async (req, res) => {
+	try {
+		req.body.author = req.user.id
+		await Note.create(req.body)
+		res.redirect('/chat')
 	} catch (error) {
 		console.error(error)
 		res.render('errors/500')

@@ -1,7 +1,7 @@
 {{#if username}}
-<h1>{{username}}'s notes</h1>
+<h1>{{username}}のメモ</h1>
 {{else}}
-<h1>{{type}} notes</h1>
+<h1>{{type}} メモ</h1>
 {{/if}}
 {{#each notes}}
 <div class="row">
@@ -11,20 +11,20 @@
 				<span class="card-title "><strong>{{title}}</strong></span>
 				<p>{{showOnly (rmTags body) 100}}</p><br>
 				<div class="chip">
-					<p><strong>Created by: </strong> <a href="#">{{author.username}}</a></p>
-					<p><strong>Created on: </strong> {{showDate createdAt 'MMMM Do YYYY'}}</p>
+					<p><strong>作者: </strong> <a href="#">{{author.username}}</a></p>
+					<p><strong>著作月日: </strong> {{showDate createdAt 'MMMM Do YYYY'}}</p>
 				</div>
 			</div>
 			<div class="card-action center-align">
-				<a href="/notes/{{_id}}">Read more</a><br><br>
+				<a href="/notes/{{_id}}">読み続ける</a><br><br>
 				{{#if (userIsAuthor author ../user)}}
 				<div>
 					<form action="/notes/{{_id}}" method="POST">
 						<input type="hidden" name="_method" value="DELETE">
-						<a class="waves-effect waves-light btn" href="/notes/edit/{{_id}}">Edit
+						<a class="waves-effect waves-light btn" href="/notes/edit/{{_id}}">編集
 							<i class="material-icons left">edit</i>
 						</a>
-						<button type="submit" class="waves-effect waves-light btn">Delete
+						<button type="submit" class="waves-effect waves-light btn">削除
 							<i class="material-icons left">delete</i>
 						</button>
 					</form>
@@ -35,6 +35,6 @@
 	</div>
 </div>
 {{else}}
-<p>No note available</p>
+<p>メモはありません。右下のボタンから追加してください。</p>
 {{/each}}
 {{>_add_btn}}
